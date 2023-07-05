@@ -63,9 +63,9 @@ function run() {
             core.setOutput(`${toolName}-version`, version);
             if (platform !== 'windows') {
                 const exePath = (0, path_1.join)(path, toolName);
-                const newPath = (0, path_1.join)(path, 'bin');
+                const newPath = (0, path_1.join)(path, 'bin', toolName);
                 io.mv(exePath, newPath);
-                yield exec.exec('chmod', ['755', (0, path_1.join)(newPath, toolName)]);
+                yield exec.exec('chmod', ['755', newPath]);
                 core.addPath(newPath);
             }
             else {
