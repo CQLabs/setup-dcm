@@ -63,9 +63,10 @@ function run() {
             core.setOutput(`${toolName}-version`, version);
             if (platform !== 'windows') {
                 const exePath = (0, path_1.join)(path, toolName);
-                const newPath = '/usr/bin';
+                const newPath = (0, path_1.join)(path, 'bin');
                 io.mv(exePath, newPath);
                 yield exec.exec('chmod', ['755', (0, path_1.join)(newPath, toolName)]);
+                core.addPath(newPath);
             }
             else {
                 core.addPath(path);
