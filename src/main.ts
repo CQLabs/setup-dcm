@@ -28,14 +28,20 @@ async function run(): Promise<void> {
 
     if (platform !== 'windows') {
       const exePath = join(path, toolName);
+      core.info(exePath);
       const newPath = join(path, 'bin', toolName);
-      io.mv(exePath, newPath);
+      core.info(newPath);
+      await io.mv(exePath, newPath);
+      core.info('Moved');
 
       await exec.exec('chmod', ['755', newPath]);
+      core.info('Permissions set');
       core.addPath(newPath);
     } else {
       core.addPath(path);
     }
+
+    core.info('Before find in path');
 
     core.info(`Has DCM: ${(await io.findInPath(toolName)).toString()}`);
 
