@@ -23,13 +23,13 @@ async function run(): Promise<void> {
 
     const url = getDownloadLink(version, platform, architecture);
     const path = await downloadExe(url, version, architecture);
-    core.addPath(path);
 
     core.setOutput(`${toolName}-version`, version);
 
     const exePath = join(path, toolName);
     const binPath = join(path, 'bin');
     io.mv(exePath, binPath);
+    core.addPath(binPath);
 
     core.info(`Moved to ${binPath}`);
     core.info(`Has DCM: ${(await io.findInPath(toolName)).toString()}`);
