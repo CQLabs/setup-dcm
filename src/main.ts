@@ -3,6 +3,7 @@ import * as exec from '@actions/exec';
 import * as github from '@actions/github';
 import * as tc from '@actions/tool-cache';
 import os from 'os';
+import { join } from 'path';
 
 type Platform = 'windows' | 'macos' | 'linux';
 type Architecture = 'arm' | 'x64';
@@ -25,6 +26,7 @@ async function run(): Promise<void> {
 
     core.setOutput(`${toolName}-version`, version);
 
+    exec.exec('chmod', ['755', join(path, toolName)]);
     exec.exec(toolName, ['--version']);
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message);
