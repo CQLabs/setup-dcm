@@ -2,6 +2,7 @@ import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import * as github from '@actions/github';
 import * as tc from '@actions/tool-cache';
+import * as io from '@actions/io';
 import os from 'os';
 import { join } from 'path';
 
@@ -26,7 +27,14 @@ async function run(): Promise<void> {
 
     core.setOutput(`${toolName}-version`, version);
 
-    exec.exec('chmod', ['755', join(path, toolName)]);
+    const exePath = join(path, toolName);
+    const binPath = join(path, 'bin');
+    io.mv(exePath, binPath);
+
+    core.info(`Moved to ${binPath}`);
+    core.info(`Has DCM: ${(await io.findInPath(toolName)).toString()}`);
+
+    exec.exec('chmod', ['755', join(binPath, toolName)]);
     exec.exec(toolName, ['--version']);
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message);
