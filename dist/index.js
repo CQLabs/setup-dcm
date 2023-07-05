@@ -61,14 +61,17 @@ function run() {
             const url = getDownloadLink(version, platform, architecture);
             const path = yield downloadExe(url, version, architecture);
             core.setOutput(`${toolName}-version`, version);
-            const exePath = (0, path_1.join)(path, toolName);
-            const binPath = (0, path_1.join)(path, 'bin');
-            io.mv(exePath, binPath);
-            core.addPath(binPath);
-            core.info(`Moved to ${binPath}`);
+            if (platform !== 'windows') {
+                const exePath = (0, path_1.join)(path, toolName);
+                const newPath = '/usr/bin';
+                io.mv(exePath, newPath);
+                yield exec.exec('chmod', ['755', (0, path_1.join)(newPath, toolName)]);
+            }
+            else {
+                core.addPath(path);
+            }
             core.info(`Has DCM: ${(yield io.findInPath(toolName)).toString()}`);
-            exec.exec('chmod', ['755', (0, path_1.join)(binPath, toolName)]);
-            exec.exec(toolName, ['--version']);
+            yield exec.exec(toolName, ['--version']);
         }
         catch (error) {
             if (error instanceof Error)
