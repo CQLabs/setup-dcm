@@ -1,105 +1,50 @@
-<p align="center">
-  <a href="https://github.com/actions/typescript-action/actions"><img alt="typescript-action status" src="https://github.com/actions/typescript-action/workflows/build-test/badge.svg"></a>
-</p>
+# Setup DCM Action
 
-# Create a JavaScript Action using TypeScript
+`setup-dcm` installs and sets up [DCM](https://dcm.dev/) for use in GitHub Actions.
 
-Use this template to bootstrap the creation of a TypeScript action.:rocket:
+## Usage example
 
-This template includes compilation support, tests, a validation workflow, publishing, and versioning guidance.  
+```yml
+name: DCM
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
 
-## Create an action from this template
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@v1
+      - uses: CQLabs/setup-dcm@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
-Click the `Use this Template` and provide the new repo details for your action
-
-## Code in Main
-
-> First, you'll need to have a reasonably modern version of `node` handy. This won't work with versions older than 9, for instance.
-
-Install the dependencies  
-```bash
-$ npm install
+      - run: dcm analyze --ci-key="${{ secrets.DCM_CI_KEY }}" --email="${{ secrets.DCM_EMAIL }}" lib
 ```
 
-Build the typescript and package it for distribution
-```bash
-$ npm run build && npm run package
-```
+## Inputs
 
-Run the tests :heavy_check_mark:  
-```bash
-$ npm test
+The action takes the following inputs:
 
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
+* `github_token`: Used to get the latest DCM version from GitHub releases (required).
+* `version`: Which DCM version to setup:
+  * A specific DCM version (ex. `1.6.0`)
+  * or `latest` (default)
 
-...
-```
+## Outputs
 
-## Change action.yml
+The action produces the following output:
 
-The action.yml defines the inputs and output for your action.
+* `dcm-version`: The version of the DCM executable that was installed.
 
-Update the action.yml with your name, description, inputs and outputs for your action.
+## License
 
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
+See the [LICENSE](LICENSE) file.
 
-## Change the Code
+## Version history
 
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-import * as core from '@actions/core';
-...
-
-async function run() {
-  try { 
-      ...
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
-```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
-
-## Publish to a distribution branch
-
-Actions are run from GitHub repos so we will checkin the packed dist folder. 
-
-Then run [ncc](https://github.com/zeit/ncc) and push the results:
-```bash
-$ npm run package
-$ git add dist
-$ git commit -a -m "prod dependencies"
-$ git push origin releases/v1
-```
-
-Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
-
-Your action is now published! :rocket: 
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Validate
-
-You can now validate the action by referencing `./` in a workflow in your repo (see [test.yml](.github/workflows/test.yml))
-
-```yaml
-uses: ./
-with:
-  milliseconds: 1000
-```
-
-See the [actions tab](https://github.com/actions/typescript-action/actions) for runs of this action! :rocket:
-
-## Usage:
-
-After testing you can [create a v1 tag](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) to reference the stable and latest V1 action
+Please see our [CHANGELOG.md](CHANGELOG.md) file.
