@@ -47,6 +47,7 @@ const exec = __importStar(__nccwpck_require__(1514));
 const github = __importStar(__nccwpck_require__(5438));
 const tc = __importStar(__nccwpck_require__(7784));
 const os_1 = __importDefault(__nccwpck_require__(2037));
+const path_1 = __nccwpck_require__(1017);
 const toolName = 'dcm';
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -60,6 +61,7 @@ function run() {
             const path = yield downloadExe(url, version, architecture);
             core.addPath(path);
             core.setOutput(`${toolName}-version`, version);
+            exec.exec('chmod', ['755', (0, path_1.join)(path, toolName)]);
             exec.exec(toolName, ['--version']);
         }
         catch (error) {
