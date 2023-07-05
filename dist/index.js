@@ -60,11 +60,11 @@ function run() {
             core.info(`Installing DCM ${version} for ${platform}-${architecture}.`);
             const url = getDownloadLink(version, platform, architecture);
             const path = yield downloadExe(url, version, architecture);
-            core.addPath(path);
             core.setOutput(`${toolName}-version`, version);
             const exePath = (0, path_1.join)(path, toolName);
             const binPath = (0, path_1.join)(path, 'bin');
             io.mv(exePath, binPath);
+            core.addPath(binPath);
             core.info(`Moved to ${binPath}`);
             core.info(`Has DCM: ${(yield io.findInPath(toolName)).toString()}`);
             exec.exec('chmod', ['755', (0, path_1.join)(binPath, toolName)]);
