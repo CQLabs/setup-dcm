@@ -28,10 +28,10 @@ async function run(): Promise<void> {
 
     if (platform !== 'windows') {
       const exePath = join(path, toolName);
-      const newPath = join(path, 'bin');
+      const newPath = join(path, 'bin', toolName);
       io.mv(exePath, newPath);
 
-      await exec.exec('chmod', ['755', join(newPath, toolName)]);
+      await exec.exec('chmod', ['755', newPath]);
       core.addPath(newPath);
     } else {
       core.addPath(path);
