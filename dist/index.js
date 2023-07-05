@@ -57,7 +57,7 @@ function run() {
             const architecture = getArchitecture();
             core.info(`Installing DCM ${version} for ${platform}-${architecture}.`);
             const url = getDownloadLink(version, platform, architecture);
-            const path = yield downloadExe(url, version, platform, architecture);
+            const path = yield downloadExe(url, version, architecture);
             core.addPath(path);
             core.setOutput(`${toolName}-version`, version);
             exec.exec(toolName, ['--version']);
@@ -101,7 +101,7 @@ function getDownloadLink(version, platform, architecture) {
     }
     return `https://github.com/CQLabs/homebrew-dcm/releases/download/${version}/dcm-${platform}-${architecture}-release.zip`;
 }
-function downloadExe(url, version, platform, architecture) {
+function downloadExe(url, version, architecture) {
     return __awaiter(this, void 0, void 0, function* () {
         const fromCache = tc.find(toolName, version, architecture);
         if (fromCache !== '') {
@@ -111,8 +111,7 @@ function downloadExe(url, version, platform, architecture) {
         core.info(`Downloading from ${url}...`);
         const archive = yield tc.downloadTool(url);
         const extracted = yield tc.extractZip(archive);
-        const exeName = `${toolName}${platform === 'windows' ? '.exe' : ''}`;
-        const path = yield tc.cacheFile(extracted, exeName, toolName, version, architecture);
+        const path = yield tc.cacheDir(extracted, toolName, version, architecture);
         return path;
     });
 }
