@@ -20,7 +20,7 @@ async function run(): Promise<void> {
     core.info(`Installing DCM ${version} for ${platform}-${architecture}.`);
 
     const url = getDownloadLink(version, platform, architecture);
-    const path = await downloadExe(url, version, platform, architecture);
+    const path = await downloadExe(url, version, architecture);
     core.addPath(path);
 
     core.setOutput(`${toolName}-version`, version);
@@ -74,7 +74,6 @@ function getDownloadLink(version: string, platform: Platform, architecture: Arch
 async function downloadExe(
   url: string,
   version: string,
-  platform: Platform,
   architecture: Architecture,
 ): Promise<string> {
   const fromCache = tc.find(toolName, version, architecture);
@@ -88,8 +87,7 @@ async function downloadExe(
 
   const archive = await tc.downloadTool(url);
   const extracted = await tc.extractZip(archive);
-  const exeName = `${toolName}${platform === 'windows' ? '.exe' : ''}`;
-  const path = await tc.cacheFile(extracted, exeName, toolName, version, architecture);
+  const path = await tc.cacheDir(extracted, toolName, version, architecture);
 
   return path;
 }
