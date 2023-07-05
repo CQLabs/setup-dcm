@@ -29,14 +29,15 @@ async function run(): Promise<void> {
     if (platform !== 'windows') {
       const exePath = join(path, toolName);
       core.info(exePath);
-      const newPath = join(path, 'bin', toolName);
+      const binPath = join(path, 'bin');
+      const newPath = join(binPath, toolName);
       core.info(newPath);
       await io.mv(exePath, newPath);
       core.info('Moved');
 
       await exec.exec('chmod', ['755', newPath]);
       core.info('Permissions set');
-      core.addPath(newPath);
+      core.addPath(binPath);
     } else {
       core.addPath(path);
     }
