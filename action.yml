@@ -15,6 +15,10 @@ inputs:
     required: false
     default: 'latest'
 
+outputs:
+  dcm-version:
+    description: 'The installed DCM version.'
+
 runs:
   using: 'node16'
   main: 'dist/index.js'
