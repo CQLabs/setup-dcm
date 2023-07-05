@@ -64,13 +64,14 @@ function run() {
             if (platform !== 'windows') {
                 const exePath = (0, path_1.join)(path, toolName);
                 core.info(exePath);
-                const newPath = (0, path_1.join)(path, 'bin', toolName);
+                const binPath = (0, path_1.join)(path, 'bin');
+                const newPath = (0, path_1.join)(binPath, toolName);
                 core.info(newPath);
                 yield io.mv(exePath, newPath);
                 core.info('Moved');
                 yield exec.exec('chmod', ['755', newPath]);
                 core.info('Permissions set');
-                core.addPath(newPath);
+                core.addPath(binPath);
             }
             else {
                 core.addPath(path);
