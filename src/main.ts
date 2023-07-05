@@ -26,16 +26,19 @@ async function run(): Promise<void> {
 
     core.setOutput(`${toolName}-version`, version);
 
-    const exePath = join(path, toolName);
-    const binPath = join(path, 'bin');
-    io.mv(exePath, binPath);
-    core.addPath(binPath);
+    if (platform !== 'windows') {
+      const exePath = join(path, toolName);
+      const newPath = '/usr/bin';
+      io.mv(exePath, newPath);
 
-    core.info(`Moved to ${binPath}`);
+      await exec.exec('chmod', ['755', join(newPath, toolName)]);
+    } else {
+      core.addPath(path);
+    }
+
     core.info(`Has DCM: ${(await io.findInPath(toolName)).toString()}`);
 
-    exec.exec('chmod', ['755', join(binPath, toolName)]);
-    exec.exec(toolName, ['--version']);
+    await exec.exec(toolName, ['--version']);
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message);
   }
