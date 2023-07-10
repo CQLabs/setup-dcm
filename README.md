@@ -17,13 +17,34 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: dart-lang/setup-dart@v1
-      - uses: CQLabs/setup-dcm@v1
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Dart and Flutter
+        uses: subosito/flutter-action@v2
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Install DCM
+        uses: CQLabs/setup-dcm@v1.0.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: dcm analyze --ci-key="${{ secrets.DCM_CI_KEY }}" --email="${{ secrets.DCM_EMAIL }}" lib
+      - name: Run DCM
+        run: dcm analyze --ci-key="${{ secrets.DCM_CI_KEY }}" --email="${{ secrets.DCM_EMAIL }}" lib
+```
+
+Alternatively, the last step can be replaced with a [dedicated DCM GitHub Action that runs DCM checks](https://github.com/CQLabs/dcm-action):
+
+```yml
+      - name: Run DCM
+        uses: CQLabs/dcm-action@v1.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          ci_key: ${{ secrets.DCM_CI_KEY }}
+          email: ${{ secrets.DCM_EMAIL }}
+          folders: lib
 ```
 
 ## Inputs
