@@ -103,6 +103,8 @@ async function downloadExe(
   const extracted = await tc.extractZip(archive);
   const path = await tc.cacheDir(extracted, toolName, version, architecture);
 
+  core.info(`Extracted path: ${path}.`);
+
   return path;
 }
 
