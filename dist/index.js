@@ -49,6 +49,7 @@ const tc = __importStar(__nccwpck_require__(7784));
 const io = __importStar(__nccwpck_require__(7436));
 const os_1 = __importDefault(__nccwpck_require__(2037));
 const path_1 = __nccwpck_require__(1017);
+const fs_1 = __nccwpck_require__(7147);
 const toolName = 'dcm';
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -116,7 +117,7 @@ function getDownloadLink(version, platform, architecture) {
 function downloadExe(url, version, architecture) {
     return __awaiter(this, void 0, void 0, function* () {
         const fromCache = tc.find(toolName, version, architecture);
-        if (fromCache !== '') {
+        if (fromCache !== '' && (0, fs_1.existsSync)((0, path_1.join)(fromCache, toolName))) {
             core.info(`Using cached version from ${fromCache}.`);
             return fromCache;
         }
