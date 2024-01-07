@@ -5,6 +5,7 @@ import * as tc from '@actions/tool-cache';
 import * as io from '@actions/io';
 import os from 'os';
 import { join } from 'path';
+import { existsSync } from 'fs';
 
 type Platform = 'windows' | 'macos' | 'linux';
 type Architecture = 'arm' | 'x64';
@@ -91,7 +92,7 @@ async function downloadExe(
   architecture: Architecture,
 ): Promise<string> {
   const fromCache = tc.find(toolName, version, architecture);
-  if (fromCache !== '') {
+  if (fromCache !== '' && existsSync(join(fromCache, toolName))) {
     core.info(`Using cached version from ${fromCache}.`);
 
     return fromCache;
