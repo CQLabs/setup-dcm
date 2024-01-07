@@ -124,6 +124,7 @@ function downloadExe(url, version, architecture) {
         const archive = yield tc.downloadTool(url);
         const extracted = yield tc.extractZip(archive);
         const path = yield tc.cacheDir(extracted, toolName, version, architecture);
+        core.info(`Extracted path: ${path}.`);
         return path;
     });
 }
