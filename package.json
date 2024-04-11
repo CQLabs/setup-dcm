@@ -1,7 +1,7 @@
 {
   "name": "setup-dcm",
   "description": "Download and setup DCM",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "author": "dcmdev",
   "private": true,
