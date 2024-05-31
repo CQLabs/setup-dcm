@@ -5,12 +5,15 @@ import * as tc from '@actions/tool-cache';
 import * as io from '@actions/io';
 import os from 'os';
 import { join } from 'path';
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
+import { YAMLMap, parseDocument } from 'yaml';
+import { satisfies } from 'semver';
 
 type Platform = 'windows' | 'macos' | 'linux';
 type Architecture = 'arm' | 'x64';
 
 const toolName = 'dcm';
+const configFileName = 'dcm_global.yaml';
 
 async function run(): Promise<void> {
   try {
@@ -48,6 +51,57 @@ async function run(): Promise<void> {
 
 async function getVersion(token: string): Promise<string> {
   const version = core.getInput('version');
+
+  if (version === 'auto') {
+    let root = '';
+
+    await exec.exec('git', ['rev-parse', '--show-toplevel'], {
+      listeners: {
+        stdout: (data: Buffer) => {
+          root += data.toString();
+        },
+      },
+    });
+
+    if (!root) {
+      throw new Error('Failed to find the repository root.');
+    }
+
+    const globalConfigPath = join(root, configFileName);
+    if (!existsSync(globalConfigPath)) {
+      throw new Error(
+        'Failed to automatically detect the version. Global configuration file does not exists.',
+      );
+    }
+
+    const versionRange = parseDocument<YAMLMap>(readFileSync(globalConfigPath).toString()).get(
+      'version',
+    ) as string | undefined;
+    if (!versionRange) {
+      throw new Error(
+        'Failed to automatically detect the version. Unable to parse the version range from the configuration file.',
+      );
+    }
+
+    const octokit = github.getOctokit(token);
+
+    const releases = await octokit.rest.repos.listReleases({
+      repo: 'homebrew-dcm',
+      owner: 'CQLabs',
+      per_page: 30,
+    });
+
+    const matchingRelease = releases.data.find(release =>
+      satisfies(release.tag_name, versionRange),
+    );
+    if (!matchingRelease) {
+      throw new Error(
+        'Failed to automatically detect the version. A matching DCM version could not be found.',
+      );
+    }
+
+    return matchingRelease.tag_name;
+  }
 
   if (version === 'latest') {
     const octokit = github.getOctokit(token);
