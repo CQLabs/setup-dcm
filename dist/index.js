@@ -45,13 +45,13 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
 const github = __importStar(__nccwpck_require__(5438));
-const tc = __importStar(__nccwpck_require__(7784));
 const io = __importStar(__nccwpck_require__(7436));
+const tc = __importStar(__nccwpck_require__(7784));
+const fs_1 = __nccwpck_require__(7147);
 const os_1 = __importDefault(__nccwpck_require__(2037));
 const path_1 = __nccwpck_require__(1017);
-const fs_1 = __nccwpck_require__(7147);
-const yaml_1 = __nccwpck_require__(4083);
 const semver_1 = __nccwpck_require__(1383);
+const yaml_1 = __nccwpck_require__(4083);
 const toolName = 'dcm';
 const configFileName = 'dcm_global.yaml';
 function run() {
@@ -96,6 +96,8 @@ function getVersion(token) {
                     },
                 },
             });
+            // Remove trailing newline
+            root = root.trim();
             if (!root) {
                 throw new Error('Failed to find the repository root.');
             }
@@ -10705,7 +10707,7 @@ const { MAX_LENGTH, MAX_SAFE_INTEGER } = __nccwpck_require__(2293)
 const { safeRe: re, t } = __nccwpck_require__(9523)
 
 const parseOptions = __nccwpck_require__(785)
-const { compareIdentifiers } = __nccwpck_require__(5865)
+const { compareIdentifiers } = __nccwpck_require__(2463)
 class SemVer {
   constructor (version, options) {
     options = parseOptions(options)
@@ -11078,7 +11080,7 @@ module.exports = cmp
 
 /***/ }),
 
-/***/ 5280:
+/***/ 3466:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const SemVer = __nccwpck_require__(8088)
@@ -11472,7 +11474,7 @@ module.exports = valid
 const internalRe = __nccwpck_require__(9523)
 const constants = __nccwpck_require__(2293)
 const SemVer = __nccwpck_require__(8088)
-const identifiers = __nccwpck_require__(5865)
+const identifiers = __nccwpck_require__(2463)
 const parse = __nccwpck_require__(5925)
 const valid = __nccwpck_require__(9601)
 const clean = __nccwpck_require__(8848)
@@ -11495,7 +11497,7 @@ const neq = __nccwpck_require__(6017)
 const gte = __nccwpck_require__(5522)
 const lte = __nccwpck_require__(7520)
 const cmp = __nccwpck_require__(5098)
-const coerce = __nccwpck_require__(5280)
+const coerce = __nccwpck_require__(3466)
 const Comparator = __nccwpck_require__(1532)
 const Range = __nccwpck_require__(9828)
 const satisfies = __nccwpck_require__(6055)
@@ -11619,7 +11621,7 @@ module.exports = debug
 
 /***/ }),
 
-/***/ 5865:
+/***/ 2463:
 /***/ ((module) => {
 
 const numeric = /^[0-9]+$/
@@ -39043,10 +39045,10 @@ exports.mapIncludes = mapIncludes;
 
 
 var Alias = __nccwpck_require__(5639);
-var Collection = __nccwpck_require__(3466);
+var Collection = __nccwpck_require__(2240);
 var identity = __nccwpck_require__(5589);
 var Pair = __nccwpck_require__(246);
-var toJS = __nccwpck_require__(2463);
+var toJS = __nccwpck_require__(2358);
 var Schema = __nccwpck_require__(6831);
 var stringifyDocument = __nccwpck_require__(5225);
 var anchors = __nccwpck_require__(8459);
@@ -39979,7 +39981,7 @@ var anchors = __nccwpck_require__(8459);
 var visit = __nccwpck_require__(6796);
 var identity = __nccwpck_require__(5589);
 var Node = __nccwpck_require__(1399);
-var toJS = __nccwpck_require__(2463);
+var toJS = __nccwpck_require__(2358);
 
 class Alias extends Node.NodeBase {
     constructor(source) {
@@ -40080,7 +40082,7 @@ exports.Alias = Alias;
 
 /***/ }),
 
-/***/ 3466:
+/***/ 2240:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -40248,7 +40250,7 @@ exports.isEmptyPath = isEmptyPath;
 
 var applyReviver = __nccwpck_require__(3412);
 var identity = __nccwpck_require__(5589);
-var toJS = __nccwpck_require__(2463);
+var toJS = __nccwpck_require__(2358);
 
 class NodeBase {
     constructor(type) {
@@ -40343,7 +40345,7 @@ exports.createPair = createPair;
 
 var identity = __nccwpck_require__(5589);
 var Node = __nccwpck_require__(1399);
-var toJS = __nccwpck_require__(2463);
+var toJS = __nccwpck_require__(2358);
 
 const isScalarValue = (value) => !value || (typeof value !== 'function' && typeof value !== 'object');
 class Scalar extends Node.NodeBase {
@@ -40378,7 +40380,7 @@ exports.isScalarValue = isScalarValue;
 
 var stringifyCollection = __nccwpck_require__(2466);
 var addPairToJSMap = __nccwpck_require__(4676);
-var Collection = __nccwpck_require__(3466);
+var Collection = __nccwpck_require__(2240);
 var identity = __nccwpck_require__(5589);
 var Pair = __nccwpck_require__(246);
 var Scalar = __nccwpck_require__(9338);
@@ -40533,10 +40535,10 @@ exports.findPair = findPair;
 
 var createNode = __nccwpck_require__(9652);
 var stringifyCollection = __nccwpck_require__(2466);
-var Collection = __nccwpck_require__(3466);
+var Collection = __nccwpck_require__(2240);
 var identity = __nccwpck_require__(5589);
 var Scalar = __nccwpck_require__(9338);
-var toJS = __nccwpck_require__(2463);
+var toJS = __nccwpck_require__(2358);
 
 class YAMLSeq extends Collection.Collection {
     static get tagName() {
@@ -40658,7 +40660,7 @@ var log = __nccwpck_require__(6909);
 var stringify = __nccwpck_require__(8409);
 var identity = __nccwpck_require__(5589);
 var Scalar = __nccwpck_require__(9338);
-var toJS = __nccwpck_require__(2463);
+var toJS = __nccwpck_require__(2358);
 
 const MERGE_KEY = '<<';
 function addPairToJSMap(ctx, map, { key, value }) {
@@ -40823,7 +40825,7 @@ exports.isSeq = isSeq;
 
 /***/ }),
 
-/***/ 2463:
+/***/ 2358:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -43977,7 +43979,7 @@ exports.intOct = intOct;
 
 
 var identity = __nccwpck_require__(5589);
-var toJS = __nccwpck_require__(2463);
+var toJS = __nccwpck_require__(2358);
 var YAMLMap = __nccwpck_require__(6011);
 var YAMLSeq = __nccwpck_require__(5161);
 var pairs = __nccwpck_require__(9841);
