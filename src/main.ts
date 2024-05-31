@@ -58,13 +58,10 @@ async function getVersion(token: string): Promise<string> {
     await exec.exec('git', ['rev-parse', '--show-toplevel'], {
       listeners: {
         stdout: (data: Buffer) => {
-          root += data.toString();
+          root += data.toString().trim();
         },
       },
     });
-
-    // Remove trailing newline
-    root = root.trim();
 
     if (!root) {
       throw new Error('Failed to find the repository root.');

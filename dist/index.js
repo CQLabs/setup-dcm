@@ -92,12 +92,10 @@ function getVersion(token) {
             yield exec.exec('git', ['rev-parse', '--show-toplevel'], {
                 listeners: {
                     stdout: (data) => {
-                        root += data.toString();
+                        root += data.toString().trim();
                     },
                 },
             });
-            // Remove trailing newline
-            root = root.trim();
             if (!root) {
                 throw new Error('Failed to find the repository root.');
             }
