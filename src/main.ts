@@ -1,13 +1,13 @@
 import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import * as github from '@actions/github';
-import * as tc from '@actions/tool-cache';
 import * as io from '@actions/io';
+import * as tc from '@actions/tool-cache';
+import { existsSync, readFileSync } from 'fs';
 import os from 'os';
 import { join } from 'path';
-import { existsSync, readFileSync } from 'fs';
-import { YAMLMap, parseDocument } from 'yaml';
 import { satisfies } from 'semver';
+import { YAMLMap, parseDocument } from 'yaml';
 
 type Platform = 'windows' | 'macos' | 'linux';
 type Architecture = 'arm' | 'x64';
@@ -58,7 +58,7 @@ async function getVersion(token: string): Promise<string> {
     await exec.exec('git', ['rev-parse', '--show-toplevel'], {
       listeners: {
         stdout: (data: Buffer) => {
-          root += data.toString();
+          root += data.toString().trim();
         },
       },
     });
