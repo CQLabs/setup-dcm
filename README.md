@@ -55,6 +55,7 @@ The action takes the following inputs:
 * `version`: Which DCM version to setup:
   * A specific DCM version (ex. `1.6.0`)
   * or `latest` (default)
+  * or `auto` (to reuse the version constraint from `dcm_global.yaml` described [here](https://dcm.dev/docs/configuration/global-configuration/))
 
 ## Outputs
 
