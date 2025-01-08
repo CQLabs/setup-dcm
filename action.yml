@@ -7,8 +7,8 @@ branding:
   icon: 'search'
 
 inputs:
-  github_token:
-    description: 'Token to connect to GitHub. Use secrets.GITHUB_TOKEN.'
+  github-token:
+    description: 'Token to connect to GitHub. Use {{ secrets.GITHUB_TOKEN }}.'
     required: true
   version:
     description: The version of the executable to install (ex. 'auto', 'latest', '1.6.0').

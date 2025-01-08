@@ -17,7 +17,7 @@ const configFileName = 'dcm_global.yaml';
 
 async function run(): Promise<void> {
   try {
-    const token = core.getInput('github_token', { required: true });
+    const token = core.getInput('github-token', { required: true });
 
     const version = await getVersion(token);
     const platform = getPlatform();

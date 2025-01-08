@@ -67,7 +67,7 @@ const configFileName = 'dcm_global.yaml';
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const token = core.getInput('github_token', { required: true });
+            const token = core.getInput('github-token', { required: true });
             const version = yield getVersion(token);
             const platform = getPlatform();
             const architecture = getArchitecture();
