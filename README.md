@@ -27,7 +27,7 @@ jobs:
         run: dart pub get
 
       - name: Install DCM
-        uses: CQLabs/setup-dcm@v1
+        uses: CQLabs/setup-dcm@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -53,7 +53,7 @@ The action takes the following inputs:
 
 - `github-token`: Used to get the latest DCM version from GitHub releases (required).
 - `version`: Which DCM version to setup:
-  - A specific DCM version (ex. `1.6.0`)
+  - A specific DCM version (ex. `1.26.0`)
   - or `latest` (default)
   - or `auto` (to reuse the version constraint from `dcm_global.yaml` described [here](https://dcm.dev/docs/configuration/global-configuration/))
 
