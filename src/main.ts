@@ -53,26 +53,7 @@ async function getVersion(token: string): Promise<string> {
   const version = core.getInput('version');
 
   if (version === 'auto') {
-    let root = '';
-
-    await exec.exec('git', ['rev-parse', '--show-toplevel'], {
-      listeners: {
-        stdout: (data: Buffer) => {
-          root += data.toString().trim();
-        },
-      },
-    });
-
-    if (!root) {
-      throw new Error('Failed to find the repository root.');
-    }
-
-    const globalConfigPath = join(root, configFileName);
-    if (!existsSync(globalConfigPath)) {
-      throw new Error(
-        'Failed to automatically detect the version. Global configuration file does not exists.',
-      );
-    }
+    const globalConfigPath = await getGlobalConfigPath();
 
     const versionRange = parseDocument<YAMLMap>(readFileSync(globalConfigPath).toString()).get(
       'version',
@@ -115,6 +96,33 @@ async function getVersion(token: string): Promise<string> {
   }
 
   return version;
+}
+
+async function getGlobalConfigPath(): Promise<string> {
+  let root = core.getInput('working-directory');
+
+  if (!root) {
+    await exec.exec('git', ['rev-parse', '--show-toplevel'], {
+      listeners: {
+        stdout: (data: Buffer) => {
+          root += data.toString().trim();
+        },
+      },
+    });
+  }
+
+  if (!root) {
+    throw new Error('Failed to find the repository root.');
+  }
+
+  const globalConfigPath = join(root, configFileName);
+  if (!existsSync(globalConfigPath)) {
+    throw new Error(
+      'Failed to automatically detect the version. Global configuration file does not exists.',
+    );
+  }
+
+  return globalConfigPath;
 }
 
 function getPlatform(): Platform {

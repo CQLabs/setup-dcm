@@ -14,6 +14,9 @@ inputs:
     description: The version of the executable to install (ex. 'auto', 'latest', '1.6.0').
     required: false
     default: 'latest'
+  working-directory:
+    description: The working directory in which to look for the dcm_global.yaml file
+    required: false
 
 outputs:
   dcm-version:

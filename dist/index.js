@@ -98,21 +98,7 @@ function getVersion(token) {
     return __awaiter(this, void 0, void 0, function* () {
         const version = core.getInput('version');
         if (version === 'auto') {
-            let root = '';
-            yield exec.exec('git', ['rev-parse', '--show-toplevel'], {
-                listeners: {
-                    stdout: (data) => {
-                        root += data.toString().trim();
-                    },
-                },
-            });
-            if (!root) {
-                throw new Error('Failed to find the repository root.');
-            }
-            const globalConfigPath = (0, path_1.join)(root, configFileName);
-            if (!(0, fs_1.existsSync)(globalConfigPath)) {
-                throw new Error('Failed to automatically detect the version. Global configuration file does not exists.');
-            }
+            const globalConfigPath = yield getGlobalConfigPath();
             const versionRange = (0, yaml_1.parseDocument)((0, fs_1.readFileSync)(globalConfigPath).toString()).get('version');
             if (!versionRange) {
                 throw new Error('Failed to automatically detect the version. Unable to parse the version range from the configuration file.');
@@ -138,6 +124,28 @@ function getVersion(token) {
             return latestRelease.data.tag_name;
         }
         return version;
+    });
+}
+function getGlobalConfigPath() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let root = core.getInput('working-directory');
+        if (!root) {
+            yield exec.exec('git', ['rev-parse', '--show-toplevel'], {
+                listeners: {
+                    stdout: (data) => {
+                        root += data.toString().trim();
+                    },
+                },
+            });
+        }
+        if (!root) {
+            throw new Error('Failed to find the repository root.');
+        }
+        const globalConfigPath = (0, path_1.join)(root, configFileName);
+        if (!(0, fs_1.existsSync)(globalConfigPath)) {
+            throw new Error('Failed to automatically detect the version. Global configuration file does not exists.');
+        }
+        return globalConfigPath;
     });
 }
 function getPlatform() {
