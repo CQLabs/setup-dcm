@@ -11,11 +11,11 @@ inputs:
     description: 'Token to connect to GitHub. Use {{ secrets.GITHUB_TOKEN }}.'
     required: true
   version:
-    description: The version of the executable to install (ex. 'auto', 'latest', '1.6.0').
+    description: The version of the executable to install (ex. 'auto', 'latest', '1.30.0').
     required: false
     default: 'latest'
   working-directory:
-    description: The working directory in which to look for the dcm_global.yaml file
+    description: The working directory in which to look for the dcm_global.yaml file.
     required: false
 
 outputs:

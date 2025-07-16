@@ -53,9 +53,10 @@ The action takes the following inputs:
 
 - `github-token`: Used to get the latest DCM version from GitHub releases (required).
 - `version`: Which DCM version to setup:
-  - A specific DCM version (ex. `1.26.0`)
+  - A specific DCM version (ex. `1.30.0`)
   - or `latest` (default)
   - or `auto` (to reuse the version constraint from `dcm_global.yaml` described [here](https://dcm.dev/docs/configuration/global-configuration/))
+- `working-directory`: The working directory in which to look for the `dcm_global.yaml` file.
 
 ## Outputs
 
