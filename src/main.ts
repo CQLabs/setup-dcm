@@ -6,7 +6,7 @@ import * as tc from '@actions/tool-cache';
 import { existsSync, readFileSync } from 'fs';
 import os from 'os';
 import { join } from 'path';
-import { satisfies } from 'semver';
+import { satisfies, valid } from 'semver';
 import { YAMLMap, parseDocument } from 'yaml';
 
 type Platform = 'windows' | 'macos' | 'linux';
@@ -62,6 +62,11 @@ async function getVersion(token: string): Promise<string> {
       throw new Error(
         'Failed to automatically detect the version. Unable to parse the version range from the configuration file.',
       );
+    }
+
+    const exactVersion = valid(versionRange);
+    if (exactVersion !== null) {
+      return exactVersion;
     }
 
     const octokit = github.getOctokit(token);

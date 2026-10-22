@@ -55,7 +55,9 @@ The action takes the following inputs:
 - `version`: Which DCM version to setup:
   - A specific DCM version (ex. `1.30.0`)
   - or `latest` (default)
-  - or `auto` (to reuse the version constraint from `dcm_global.yaml` described [here](https://dcm.dev/docs/configuration/global-configuration/))
+  - or `auto` to reuse the `version` from `dcm_global.yaml` described [here](https://dcm.dev/docs/configuration/global-configuration/), which can be:
+    - an exact version (ex. `1.40.2`), installed directly without a GitHub API call
+    - or a version range (ex. `>=1.30.0 <2.0.0`), resolved to the newest matching DCM release
 - `working-directory`: The working directory in which to look for the `dcm_global.yaml` file.
 
 ## Outputs

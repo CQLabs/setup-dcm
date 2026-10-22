@@ -103,6 +103,10 @@ function getVersion(token) {
             if (!versionRange) {
                 throw new Error('Failed to automatically detect the version. Unable to parse the version range from the configuration file.');
             }
+            const exactVersion = (0, semver_1.valid)(versionRange);
+            if (exactVersion !== null) {
+                return exactVersion;
+            }
             const octokit = github.getOctokit(token);
             const releases = yield octokit.rest.repos.listReleases({
                 repo: 'homebrew-dcm',
